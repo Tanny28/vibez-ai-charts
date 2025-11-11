@@ -1,6 +1,6 @@
 // src/components/KpiCards.tsx
 import { motion } from 'framer-motion';
-import { formatNumber } from '@/lib/utils';
+import { formatNumber } from '../lib/utils';
 
 interface KpiCardsProps {
   summary?: any;

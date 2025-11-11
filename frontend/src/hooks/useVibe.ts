@@ -1,6 +1,6 @@
 // src/hooks/useVibe.ts
 import { useState } from 'react';
-import { api, RecommendRequest, RecommendResponse } from '@/lib/api';
+import { api, RecommendRequest, RecommendResponse } from '../lib/api';
 
 export function useVibe() {
   const [loading, setLoading] = useState(false);

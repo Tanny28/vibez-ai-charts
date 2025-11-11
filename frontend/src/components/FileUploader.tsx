@@ -1,6 +1,6 @@
 // src/components/FileUploader.tsx
 import React, { useCallback, useState } from 'react';
-import { api } from '@/lib/api';
+import { api } from '../lib/api';
 
 interface FileUploaderProps {
   onUploadSuccess: (fileId: string, summary: any) => void;

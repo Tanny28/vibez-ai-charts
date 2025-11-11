@@ -1,5 +1,5 @@
 // src/App.tsx
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import PromptBox from './components/PromptBox';
 import FileUploader from './components/FileUploader';

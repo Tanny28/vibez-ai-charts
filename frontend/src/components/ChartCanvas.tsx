@@ -1,7 +1,7 @@
 // src/components/ChartCanvas.tsx
 import React from 'react';
 import { motion } from 'framer-motion';
-import { downloadJSON } from '@/lib/utils';
+import { downloadJSON } from '../lib/utils';
 
 interface ChartCanvasProps {
   spec: any;
