@@ -1,0 +1,21 @@
+country_code,country,year,gdp_per_capita
+USA,United States,2023,76398
+CHN,China,2023,12720
+JPN,Japan,2023,33815
+DEU,Germany,2023,48756
+IND,India,2023,2389
+GBR,United Kingdom,2023,46371
+FRA,France,2023,44408
+ITA,Italy,2023,35551
+BRA,Brazil,2023,8917
+CAN,Canada,2023,54866
+KOR,South Korea,2023,32661
+RUS,Russia,2023,12194
+AUS,Australia,2023,64491
+ESP,Spain,2023,30103
+MEX,Mexico,2023,11497
+IDN,Indonesia,2023,4788
+NLD,Netherlands,2023,57534
+SAU,Saudi Arabia,2023,30447
+TUR,Turkey,2023,10673
+CHE,Switzerland,2023,92101

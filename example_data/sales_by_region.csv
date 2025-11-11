@@ -1,0 +1,17 @@
+region,product,sales
+North,Product A,45000
+North,Product B,38000
+North,Product C,52000
+South,Product A,38000
+South,Product B,42000
+South,Product C,35000
+East,Product A,51000
+East,Product B,47000
+East,Product C,49000
+West,Product A,42000
+West,Product B,39000
+West,Product C,44000
+North,Product D,33000
+South,Product D,29000
+East,Product D,41000
+West,Product D,36000
