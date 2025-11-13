@@ -286,7 +286,8 @@ async def get_insights(file_id: str):
                 
                 # Get AI-powered suggestions
                 ai_suggestions = storyteller.suggest_next_analysis(
-                    analysis['insights']
+                    analysis['insights'],
+                    data_summary.get('type', 'bar')
                 )
                 
             except Exception as e:
@@ -331,17 +332,21 @@ async def ask_question(req: QuestionRequest):
         # Load data
         df = pd.read_csv(file_path)
         
+        # Get cached insights if available
+        insights_engine = DataInsightsEngine(df)
+        analysis = insights_engine.analyze()
+        
         # Create Q&A engine
-        qa_engine = create_qa_engine(df)
+        qa_engine = create_qa_engine(df, req.file_id)
         
         # Answer the question
-        result = qa_engine.ask(req.question)
+        result = qa_engine.ask(req.question, analysis['insights'])
         
         return {
             "question": req.question,
             "answer": result['answer'],
             "success": result['success'],
-            "data_summary": result.get('data_summary', {})
+            "context": result.get('context', {})
         }
     
     except Exception as e:
