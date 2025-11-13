@@ -1,24 +1,16 @@
 // src/components/DataQA.tsx
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { api } from '../lib/api';
+import { api, QAResponse } from '../lib/api';
 
 interface DataQAProps {
   fileId: string;
 }
 
-interface QAResult {
-  question: string;
-  answer: string;
-  data: any;
-  visualization_suggestion: string | null;
-  confidence: string;
-}
-
 export default function DataQA({ fileId }: DataQAProps) {
   const [question, setQuestion] = useState('');
   const [loading, setLoading] = useState(false);
-  const [results, setResults] = useState<QAResult[]>([]);
+  const [results, setResults] = useState<QAResponse[]>([]);
 
   const handleAsk = async () => {
     if (!question.trim() || !fileId) return;
@@ -145,40 +137,17 @@ export default function DataQA({ fileId }: DataQAProps) {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                   <div className="flex-1">
-                    <p className="text-sm text-gray-200 leading-relaxed">{result.answer}</p>
+                    <p className="text-sm text-gray-200 leading-relaxed whitespace-pre-wrap">{result.answer}</p>
 
-                    {/* Data Preview */}
-                    {result.data && Object.keys(result.data).length > 0 && (
-                      <div className="mt-3 bg-gray-900/50 border border-gray-800 rounded p-3">
-                        <p className="text-xs text-gray-500 font-mono mb-2">DATA:</p>
-                        <pre className="text-xs text-gray-400 font-mono overflow-x-auto">
-                          {JSON.stringify(result.data, null, 2).slice(0, 500)}
-                          {JSON.stringify(result.data).length > 500 && '...'}
-                        </pre>
+                    {/* Success Indicator */}
+                    {result.success && (
+                      <div className="mt-2">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-mono bg-green-950/30 border border-green-800/50 text-green-400">
+                          <span className="w-1.5 h-1.5 rounded-full bg-current"></span>
+                          AI RESPONSE
+                        </span>
                       </div>
                     )}
-
-                    {/* Visualization Suggestion */}
-                    {result.visualization_suggestion && (
-                      <div className="mt-2 inline-flex items-center gap-2 px-3 py-1.5 bg-purple-950/30 border border-purple-800/50 rounded text-xs text-purple-300">
-                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                        </svg>
-                        Suggested: {result.visualization_suggestion} chart
-                      </div>
-                    )}
-
-                    {/* Confidence */}
-                    <div className="mt-2">
-                      <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-mono ${
-                        result.confidence === 'high' 
-                          ? 'bg-green-950/30 border border-green-800/50 text-green-400'
-                          : 'bg-yellow-950/30 border border-yellow-800/50 text-yellow-400'
-                      }`}>
-                        <span className="w-1.5 h-1.5 rounded-full bg-current"></span>
-                        {result.confidence.toUpperCase()} CONFIDENCE
-                      </span>
-                    </div>
                   </div>
                 </div>
               </motion.div>

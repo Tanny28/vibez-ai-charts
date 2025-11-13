@@ -12,7 +12,8 @@ class AIStoryteller:
         if not api_key:
             raise ValueError("GEMINI_API_KEY not found")
         genai.configure(api_key=api_key)
-        self.model = genai.GenerativeModel('gemini-1.5-flash')
+        # Use the latest stable flash model
+        self.model = genai.GenerativeModel('gemini-2.5-flash')
     
     def generate_story(self, insights: List[Dict[str, Any]], chart_config: Dict[str, Any], context: Optional[str] = None) -> str:
         try:
