@@ -8,6 +8,7 @@ import KpiCards from './components/KpiCards';
 import ConstraintsCard from './components/ConstraintsCard';
 import LoadingSpinner from './components/LoadingSpinner';
 import InsightsPanel from './components/InsightsPanel';
+import DataQA from './components/DataQA';
 import { useVibe } from './hooks/useVibe';
 import { api } from './lib/api';
 
@@ -15,6 +16,8 @@ function App() {
   const [fileId, setFileId] = useState<string>('');
   const [summary, setSummary] = useState<any>(null);
   const [insights, setInsights] = useState<any>(null);
+  const [aiStory, setAiStory] = useState<string>('');
+  const [aiSuggestions, setAiSuggestions] = useState<string[]>([]);
   const [loadingInsights, setLoadingInsights] = useState(false);
   const { loading, result, error, getRecommendation, reset } = useVibe();
 
@@ -39,6 +42,14 @@ function App() {
     try {
       const insightsData = await api.getInsights(uploadedFileId);
       setInsights(insightsData);
+      
+      // Set AI-generated content
+      if (insightsData.ai_story) {
+        setAiStory(insightsData.ai_story);
+      }
+      if (insightsData.ai_suggestions) {
+        setAiSuggestions(insightsData.ai_suggestions);
+      }
     } catch (error) {
       console.error('Failed to fetch insights:', error);
     } finally {
@@ -108,7 +119,15 @@ function App() {
                   insights={insights.insights} 
                   autoCharts={insights.auto_charts}
                   onSelectChart={handleSelectAutoChart}
+                  aiStory={aiStory}
+                  aiSuggestions={aiSuggestions}
                 />
+              </div>
+            )}
+            
+            {fileId && (
+              <div className="mb-6">
+                <DataQA fileId={fileId} />
               </div>
             )}
             

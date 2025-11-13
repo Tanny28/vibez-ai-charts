@@ -55,6 +55,15 @@ export interface InsightsResponse {
     prompt: string;
   }>;
   statistics: any;
+  ai_story?: string;  // NEW: AI-generated narrative
+  ai_suggestions?: string[];  // NEW: AI follow-up questions
+}
+
+export interface QAResponse {
+  question: string;
+  answer: string;
+  success: boolean;
+  data_summary?: any;
 }
 
 export const api = {
@@ -88,6 +97,14 @@ export const api = {
 
   async getInsights(fileId: string): Promise<InsightsResponse> {
     const response = await axios.get(`${API_BASE}/api/insights/${fileId}`);
+    return response.data;
+  },
+
+  async askQuestion(fileId: string, question: string): Promise<QAResponse> {
+    const response = await axios.post(`${API_BASE}/api/ask`, {
+      file_id: fileId,
+      question: question
+    });
     return response.data;
   },
 };

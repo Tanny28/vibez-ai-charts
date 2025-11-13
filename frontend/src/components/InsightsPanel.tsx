@@ -18,13 +18,59 @@ interface InsightsPanelProps {
     prompt: string;
   }>;
   onSelectChart: (prompt: string) => void;
+  aiStory?: string;  // NEW: AI-generated narrative
+  aiSuggestions?: string[];  // NEW: AI follow-up questions
 }
 
-export default function InsightsPanel({ insights, autoCharts, onSelectChart }: InsightsPanelProps) {
+export default function InsightsPanel({ insights, autoCharts, onSelectChart, aiStory, aiSuggestions }: InsightsPanelProps) {
   if (!insights || insights.length === 0) return null;
 
   return (
     <div className="space-y-6">
+      {/* AI Story Section - NEW! */}
+      {aiStory && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-gradient-to-br from-blue-950/30 to-purple-950/30 border border-blue-800/50 rounded-lg p-6"
+        >
+          <div className="flex items-center gap-2 mb-4">
+            <svg className="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+            <h2 className="text-xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent font-mono">
+              AI Data Story
+            </h2>
+            <span className="px-2 py-1 bg-blue-950/50 border border-blue-800/50 rounded text-xs text-blue-400 font-mono">
+              POWERED BY GPT-4
+            </span>
+          </div>
+          
+          <div className="bg-black/40 border border-blue-900/30 rounded-lg p-5">
+            <p className="text-gray-200 leading-relaxed whitespace-pre-line">{aiStory}</p>
+          </div>
+
+          {/* AI Suggestions */}
+          {aiSuggestions && aiSuggestions.length > 0 && (
+            <div className="mt-4">
+              <p className="text-xs text-blue-400 font-mono mb-2">💡 AI-SUGGESTED FOLLOW-UP QUESTIONS</p>
+              <div className="space-y-2">
+                {aiSuggestions.map((suggestion, index) => (
+                  <button
+                    key={index}
+                    onClick={() => onSelectChart(suggestion)}
+                    className="w-full text-left bg-blue-950/20 hover:bg-blue-950/40 border border-blue-800/30 hover:border-blue-600/50 rounded px-4 py-2 text-sm text-gray-300 hover:text-blue-300 transition-all group"
+                  >
+                    <span className="text-blue-500 mr-2 group-hover:text-blue-400">→</span>
+                    {suggestion}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </motion.div>
+      )}
+
       {/* Insights Section */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}

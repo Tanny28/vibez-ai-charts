@@ -8,10 +8,13 @@ from app.schemas import RecommendRequest, RecommendResponse, UploadResponse, Pre
 from app.chart_generator import generate_plotly_spec
 from app.ml_vibe_engine import get_ml_engine
 from app.data_insights import DataInsightsEngine
+from app.ai_storyteller import get_storyteller
+from app.data_qa import create_qa_engine
 import uuid
 import os
 import pandas as pd
 from pathlib import Path
+from pydantic import BaseModel
 
 app = FastAPI(title="Vibe-Code API", version="1.0.0")
 
@@ -247,6 +250,7 @@ async def get_insights(file_id: str):
     """
     Generate automatic business insights from uploaded data.
     Returns 5 key insights, recommendations, and suggested visualizations.
+    NOW WITH AI-POWERED STORYTELLING!
     """
     try:
         file_path = DATA_DIR / f"{file_id}.csv"
@@ -260,16 +264,88 @@ async def get_insights(file_id: str):
         engine = DataInsightsEngine(df)
         analysis = engine.analyze()
         
+        # Generate AI story from insights
+        storyteller = get_storyteller()
+        ai_story = None
+        ai_suggestions = []
+        
+        if storyteller:
+            try:
+                # Create data summary for AI
+                data_summary = {
+                    'total_rows': len(df),
+                    'total_columns': len(df.columns),
+                    'columns': list(df.columns)
+                }
+                
+                # Generate compelling narrative
+                ai_story = storyteller.generate_story(
+                    analysis['insights'], 
+                    data_summary
+                )
+                
+                # Get AI-powered suggestions
+                ai_suggestions = storyteller.suggest_next_analysis(
+                    analysis['insights']
+                )
+                
+            except Exception as e:
+                print(f"AI storytelling failed: {e}")
+                # Continue without AI features
+        
         return {
             "file_id": file_id,
             "insights": analysis['insights'],
             "recommendations": analysis['recommendations'],
             "auto_charts": analysis['auto_charts'],
-            "statistics": analysis['statistics']
+            "statistics": analysis['statistics'],
+            "ai_story": ai_story,  # NEW: AI-generated narrative
+            "ai_suggestions": ai_suggestions  # NEW: Smart follow-up questions
         }
     
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Insights generation failed: {str(e)}")
+
+# Q&A Request Model
+from pydantic import BaseModel
+
+class QuestionRequest(BaseModel):
+    file_id: str
+    question: str
+
+@app.post("/api/ask")
+async def ask_question(req: QuestionRequest):
+    """
+    Answer natural language questions about the data using Gemini AI.
+    Examples:
+    - "What are the top 5 products by sales?"
+    - "Which region has the highest revenue?"
+    - "Show me sales trends over time"
+    - "What's the average order value?"
+    """
+    try:
+        file_path = DATA_DIR / f"{req.file_id}.csv"
+        if not file_path.exists():
+            raise HTTPException(status_code=404, detail="File not found")
+        
+        # Load data
+        df = pd.read_csv(file_path)
+        
+        # Create Q&A engine
+        qa_engine = create_qa_engine(df)
+        
+        # Answer the question
+        result = qa_engine.ask(req.question)
+        
+        return {
+            "question": req.question,
+            "answer": result['answer'],
+            "success": result['success'],
+            "data_summary": result.get('data_summary', {})
+        }
+    
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":
     import uvicorn
