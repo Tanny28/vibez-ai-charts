@@ -8,10 +8,12 @@ services:
       - "8000:8000"
     volumes:
       - ./backend/data:/app/data
-      - ./mapping_table.csv:/app/mapping_table.csv:ro
-      - ./prompts.csv:/app/prompts.csv:ro
     environment:
       - PYTHONUNBUFFERED=1
+      # Add your GEMINI_API_KEY here or use .env file
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+    env_file:
+      - ./backend/.env
     networks:
       - vibez-network
     healthcheck:
@@ -28,6 +30,8 @@ services:
       - "3000:80"
     depends_on:
       - backend
+    environment:
+      - VITE_API_URL=http://backend:8000
     networks:
       - vibez-network
 
