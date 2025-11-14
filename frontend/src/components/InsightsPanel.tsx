@@ -42,7 +42,7 @@ export default function InsightsPanel({ insights, autoCharts, onSelectChart, aiS
               AI Data Story
             </h2>
             <span className="px-2 py-1 bg-blue-950/50 border border-blue-800/50 rounded text-xs text-blue-400 font-mono">
-              POWERED BY GPT-4
+              AI POWERED
             </span>
           </div>
           
