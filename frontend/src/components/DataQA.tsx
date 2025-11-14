@@ -45,7 +45,7 @@ export default function DataQA({ fileId }: DataQAProps) {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-gradient-to-br from-gray-900 to-black border border-gray-800 rounded-lg p-6"
+      className="bg-gradient-to-br from-gray-900/50 to-black/50 backdrop-blur-xl border border-gray-800/50 rounded-lg p-6 shadow-xl shadow-black/20"
     >
       {/* Header */}
       <div className="flex items-center gap-2 mb-4">
@@ -55,7 +55,7 @@ export default function DataQA({ fileId }: DataQAProps) {
         <h2 className="text-xl font-bold bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent font-mono">
           Ask Your Data
         </h2>
-        <span className="px-2 py-1 bg-green-950/50 border border-green-800/50 rounded text-xs text-green-400 font-mono">
+        <span className="px-2 py-1 bg-green-950/50 border border-green-800/50 rounded text-xs text-green-400 font-mono shadow-lg shadow-green-500/20">
           AI-POWERED
         </span>
       </div>
@@ -69,16 +69,18 @@ export default function DataQA({ fileId }: DataQAProps) {
             onChange={(e) => setQuestion(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder="Ask anything about your data..."
-            className="w-full bg-black/40 border border-gray-700 rounded-lg px-4 py-3 pr-24 text-gray-100 placeholder-gray-500 focus:outline-none focus:border-green-600 focus:ring-1 focus:ring-green-600 font-mono text-sm"
+            className="w-full bg-black/50 backdrop-blur-sm border border-gray-700 rounded-lg px-4 py-3 pr-24 text-gray-100 placeholder-gray-500 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/50 focus:shadow-lg focus:shadow-green-500/20 font-mono text-sm transition-all"
             disabled={loading}
           />
-          <button
+          <motion.button
             onClick={handleAsk}
             disabled={loading || !question.trim()}
-            className="absolute right-2 top-1/2 -translate-y-1/2 px-4 py-1.5 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 disabled:from-gray-700 disabled:to-gray-600 text-white rounded font-mono text-xs font-bold transition-all disabled:cursor-not-allowed"
+            className="absolute right-2 top-1/2 -translate-y-1/2 px-4 py-1.5 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 disabled:from-gray-700 disabled:to-gray-600 text-white rounded font-mono text-xs font-bold transition-all disabled:cursor-not-allowed shadow-lg shadow-green-500/30 hover:shadow-green-500/50"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
             {loading ? 'ASKING...' : 'ASK'}
-          </button>
+          </motion.button>
         </div>
       </div>
 
@@ -88,14 +90,18 @@ export default function DataQA({ fileId }: DataQAProps) {
           <p className="text-xs text-gray-500 font-mono mb-2">TRY ASKING:</p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
             {exampleQuestions.map((q, index) => (
-              <button
+              <motion.button
                 key={index}
                 onClick={() => setQuestion(q)}
-                className="text-left bg-black/30 border border-gray-800 hover:border-green-700 hover:bg-green-950/20 rounded px-3 py-2 text-xs text-gray-400 hover:text-green-300 transition-all group"
+                className="text-left bg-black/30 border border-gray-800 hover:border-green-600 hover:bg-green-950/20 rounded px-3 py-2 text-xs text-gray-400 hover:text-green-300 transition-all group"
+                whileHover={{ scale: 1.02, x: 2 }}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.05 }}
               >
                 <span className="text-green-500 mr-2 group-hover:text-green-400">→</span>
                 {q}
-              </button>
+              </motion.button>
             ))}
           </div>
         </div>

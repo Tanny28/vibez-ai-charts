@@ -32,23 +32,37 @@ export default function InsightsPanel({ insights, autoCharts, onSelectChart, aiS
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-gradient-to-br from-blue-950/30 to-purple-950/30 border border-blue-800/50 rounded-lg p-6"
+          className="bg-gradient-to-br from-blue-950/40 to-purple-950/40 backdrop-blur-xl border border-blue-800/50 rounded-lg p-6 shadow-2xl shadow-blue-900/20"
+          whileHover={{ scale: 1.01 }}
+          transition={{ type: "spring", stiffness: 300 }}
         >
           <div className="flex items-center gap-2 mb-4">
-            <svg className="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <motion.svg 
+              className="w-6 h-6 text-blue-400" 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+              animate={{ rotate: [0, 5, -5, 0] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            >
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
+            </motion.svg>
             <h2 className="text-xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent font-mono">
               AI Data Story
             </h2>
-            <span className="px-2 py-1 bg-blue-950/50 border border-blue-800/50 rounded text-xs text-blue-400 font-mono">
+            <span className="px-2 py-1 bg-blue-950/50 border border-blue-800/50 rounded text-xs text-blue-400 font-mono shadow-lg shadow-blue-500/30">
               AI POWERED
             </span>
           </div>
           
-          <div className="bg-black/40 border border-blue-900/30 rounded-lg p-5">
+          <motion.div 
+            className="bg-black/50 backdrop-blur-sm border border-blue-900/30 rounded-lg p-5"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+          >
             <p className="text-gray-200 leading-relaxed whitespace-pre-line">{aiStory}</p>
-          </div>
+          </motion.div>
 
           {/* AI Suggestions */}
           {aiSuggestions && aiSuggestions.length > 0 && (
@@ -56,14 +70,25 @@ export default function InsightsPanel({ insights, autoCharts, onSelectChart, aiS
               <p className="text-xs text-blue-400 font-mono mb-2">💡 AI-SUGGESTED FOLLOW-UP QUESTIONS</p>
               <div className="space-y-2">
                 {aiSuggestions.map((suggestion, index) => (
-                  <button
+                  <motion.button
                     key={index}
                     onClick={() => onSelectChart(suggestion)}
-                    className="w-full text-left bg-blue-950/20 hover:bg-blue-950/40 border border-blue-800/30 hover:border-blue-600/50 rounded px-4 py-2 text-sm text-gray-300 hover:text-blue-300 transition-all group"
+                    className="w-full text-left bg-blue-950/20 hover:bg-blue-950/40 border border-blue-800/30 hover:border-blue-500/70 rounded px-4 py-2 text-sm text-gray-300 hover:text-blue-300 transition-all group relative overflow-hidden"
+                    whileHover={{ scale: 1.02, x: 4 }}
+                    whileTap={{ scale: 0.98 }}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.1 }}
                   >
-                    <span className="text-blue-500 mr-2 group-hover:text-blue-400">→</span>
-                    {suggestion}
-                  </button>
+                    <motion.div 
+                      className="absolute inset-0 bg-gradient-to-r from-blue-500/0 via-blue-500/10 to-blue-500/0"
+                      initial={{ x: '-100%' }}
+                      whileHover={{ x: '100%' }}
+                      transition={{ duration: 0.6 }}
+                    />
+                    <span className="text-blue-500 mr-2 group-hover:text-blue-400 relative z-10">→</span>
+                    <span className="relative z-10">{suggestion}</span>
+                  </motion.button>
                 ))}
               </div>
             </div>
@@ -75,7 +100,7 @@ export default function InsightsPanel({ insights, autoCharts, onSelectChart, aiS
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-gradient-to-br from-gray-900 to-black border border-gray-800 rounded-lg p-6"
+        className="bg-gradient-to-br from-gray-900/50 to-black/50 backdrop-blur-xl border border-gray-800/50 rounded-lg p-6 shadow-xl shadow-black/20"
       >
         <div className="flex items-center gap-2 mb-6">
           <svg className="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">

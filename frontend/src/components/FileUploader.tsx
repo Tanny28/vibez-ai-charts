@@ -1,5 +1,6 @@
 // src/components/FileUploader.tsx
 import React, { useCallback, useState } from 'react';
+import { motion } from 'framer-motion';
 import { api } from '../lib/api';
 
 interface FileUploaderProps {
@@ -71,7 +72,12 @@ export default function FileUploader({ onUploadSuccess }: FileUploaderProps) {
   };
 
   return (
-    <div className="bg-gradient-to-br from-gray-900 to-black border border-gray-800 rounded-lg p-6">
+    <motion.div 
+      className="bg-gradient-to-br from-gray-900/50 to-black/50 backdrop-blur-xl border border-gray-800/50 rounded-lg p-6 shadow-xl shadow-blue-900/5"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
       <h3 className="text-lg font-semibold text-gray-100 mb-4 font-mono">Data Source</h3>
 
       {uploadedFile ? (
@@ -96,16 +102,18 @@ export default function FileUploader({ onUploadSuccess }: FileUploaderProps) {
           onDragEnter={handleDrag}
           onSubmit={(e) => e.preventDefault()}
         >
-          <div
-            className={`relative border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
+          <motion.div
+            className={`relative border-2 border-dashed rounded-lg p-8 text-center transition-all duration-300 ${
               dragActive
-                ? 'border-blue-500 bg-blue-950/20'
-                : 'border-gray-700 hover:border-gray-600 bg-black/30'
+                ? 'border-blue-500 bg-blue-950/30 shadow-lg shadow-blue-500/50 scale-105'
+                : 'border-gray-700 hover:border-blue-600 hover:shadow-lg hover:shadow-blue-900/30 bg-black/30'
             }`}
             onDragEnter={handleDrag}
             onDragLeave={handleDrag}
             onDragOver={handleDrag}
             onDrop={handleDrop}
+            whileHover={{ scale: 1.02 }}
+            transition={{ type: "spring", stiffness: 300 }}
           >
             <input
               type="file"
@@ -114,16 +122,25 @@ export default function FileUploader({ onUploadSuccess }: FileUploaderProps) {
               disabled={uploading}
               className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
             />
-            <svg className={`w-12 h-12 mx-auto mb-4 ${dragActive ? 'text-blue-400' : 'text-gray-600'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <motion.svg 
+              className={`w-12 h-12 mx-auto mb-4 ${
+                dragActive ? 'text-blue-400' : 'text-gray-600'
+              }`} 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+              animate={dragActive ? { scale: [1, 1.1, 1] } : {}}
+              transition={{ duration: 0.5, repeat: dragActive ? Infinity : 0 }}
+            >
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-            </svg>
+            </motion.svg>
             <p className="text-sm text-gray-300 mb-1 font-mono">
               {uploading ? 'UPLOADING...' : 'DROP CSV FILE'}
             </p>
             <p className="text-xs text-gray-500 font-mono">or click to select</p>
-          </div>
+          </motion.div>
         </form>
       )}
-    </div>
+    </motion.div>
   );
 }

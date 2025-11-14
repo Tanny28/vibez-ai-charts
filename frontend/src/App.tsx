@@ -62,16 +62,61 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-gray-100">
+    <div className="min-h-screen bg-[#0a0a0a] text-gray-100 relative overflow-hidden">
+      {/* Animated Background Gradient Orbs */}
+      <div className="fixed inset-0 -z-10 overflow-hidden">
+        <motion.div
+          className="absolute top-0 -left-20 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl"
+          animate={{
+            x: [0, 100, 0],
+            y: [0, -50, 0],
+            scale: [1, 1.2, 1],
+          }}
+          transition={{
+            duration: 20,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+        <motion.div
+          className="absolute top-40 right-0 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl"
+          animate={{
+            x: [0, -100, 0],
+            y: [0, 100, 0],
+            scale: [1, 1.3, 1],
+          }}
+          transition={{
+            duration: 25,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+        <motion.div
+          className="absolute bottom-0 left-1/2 w-96 h-96 bg-cyan-500/15 rounded-full blur-3xl"
+          animate={{
+            x: [0, 50, 0],
+            y: [0, -80, 0],
+            scale: [1, 1.1, 1],
+          }}
+          transition={{
+            duration: 18,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+      </div>
+
       {/* Header */}
-      <header className="border-b border-gray-800 bg-black/50 backdrop-blur-xl sticky top-0 z-50">
+      <header className="border-b border-gray-800/50 bg-black/30 backdrop-blur-2xl sticky top-0 z-50 shadow-lg shadow-blue-900/10">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <img 
+              <motion.img 
                 src="/vibez-logo.png" 
                 alt="Vibez AI Charts" 
                 className="h-12 w-auto"
+                whileHover={{ scale: 1.05, rotate: 2 }}
+                transition={{ type: "spring", stiffness: 400 }}
               />
               <div className="border-l border-gray-700 pl-4">
                 <p className="text-xs text-gray-400 font-mono">Natural Language → Professional Visualizations</p>

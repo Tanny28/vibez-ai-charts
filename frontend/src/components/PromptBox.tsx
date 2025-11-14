@@ -24,7 +24,7 @@ export default function PromptBox({ onSubmit, loading }: PromptBoxProps) {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-gradient-to-br from-gray-900 to-black border border-gray-800 rounded-lg p-6"
+      className="bg-gradient-to-br from-gray-900/50 to-black/50 backdrop-blur-xl border border-gray-800/50 rounded-lg p-6 shadow-xl shadow-black/20"
     >
       <div className="flex items-center gap-2 mb-4">
         <svg className="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -43,7 +43,7 @@ export default function PromptBox({ onSubmit, loading }: PromptBoxProps) {
             value={goal}
             onChange={(e) => setGoal(e.target.value)}
             placeholder="describe your visualization intent..."
-            className="w-full px-4 py-3 bg-black border border-gray-700 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-gray-100 placeholder-gray-600 font-mono text-sm"
+            className="w-full px-4 py-3 bg-black/50 backdrop-blur-sm border border-gray-700 rounded-md focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 focus:shadow-lg focus:shadow-blue-500/20 resize-none text-gray-100 placeholder-gray-600 font-mono text-sm transition-all"
             rows={3}
             disabled={loading}
           />
@@ -57,7 +57,7 @@ export default function PromptBox({ onSubmit, loading }: PromptBoxProps) {
             id="insight"
             value={insight}
             onChange={(e) => setInsight(e.target.value)}
-            className="w-full px-4 py-2 bg-black border border-gray-700 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-100 font-mono text-sm"
+            className="w-full px-4 py-2 bg-black/50 backdrop-blur-sm border border-gray-700 rounded-md focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 focus:shadow-lg focus:shadow-blue-500/20 text-gray-100 font-mono text-sm transition-all"
             disabled={loading}
           >
             {INSIGHTS.map((type) => (
@@ -68,10 +68,12 @@ export default function PromptBox({ onSubmit, loading }: PromptBoxProps) {
           </select>
         </div>
 
-        <button
+        <motion.button
           type="submit"
           disabled={loading || !goal.trim()}
-          className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 px-6 rounded-md font-medium hover:from-blue-500 hover:to-purple-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-mono text-sm tracking-wider"
+          className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 px-6 rounded-md font-medium hover:from-blue-500 hover:to-purple-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-mono text-sm tracking-wider shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:shadow-xl"
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
         >
           {loading ? (
             <span className="flex items-center justify-center gap-2">
@@ -84,7 +86,7 @@ export default function PromptBox({ onSubmit, loading }: PromptBoxProps) {
           ) : (
             'EXECUTE QUERY'
           )}
-        </button>
+        </motion.button>
       </form>
     </motion.div>
   );
