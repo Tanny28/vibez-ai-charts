@@ -24,7 +24,6 @@ RUN pip install --no-cache-dir --upgrade pip && \
 # Copy backend application
 COPY backend/app ./app/
 COPY backend/models ./models/
-COPY backend/.env .env
 
 # Create data directory for uploads
 RUN mkdir -p data

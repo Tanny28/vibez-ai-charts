@@ -19,10 +19,8 @@ COPY app/ ./app/
 # Copy ML models directory
 COPY models/ ./models/
 
-# Copy environment file (contains GEMINI_API_KEY)
-COPY .env .env
-
 # Create data directory for CSV uploads
+# Note: Set GEMINI_API_KEY in Render environment variables
 RUN mkdir -p data
 
 # Expose port
